@@ -1,4 +1,4 @@
-"""Thin wrapper around the NVIDIA-hosted OpenAI-compatible client.
+"""Thin wrapper around the Groq-hosted OpenAI-compatible client.
 
 Kept separate from the analyzer module so multiple features (current ATS
 feedback + new specialization fit) can share the same singleton client and
@@ -18,19 +18,19 @@ logger = logging.getLogger("ml-service.llm")
 
 _client: OpenAI | None = None
 
-NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
-NVIDIA_MODEL = os.getenv("NVIDIA_MODEL", "openai/gpt-oss-120b")
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 
 
 def get_client() -> OpenAI:
     global _client
     if _client is None:
-        api_key = os.getenv("NVIDIA_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise RuntimeError(
-                "NVIDIA_API_KEY environment variable is not set."
+                "GROQ_API_KEY environment variable is not set."
             )
-        _client = OpenAI(base_url=NVIDIA_BASE_URL, api_key=api_key)
+        _client = OpenAI(base_url=GROQ_BASE_URL, api_key=api_key)
     return _client
 
 
@@ -58,7 +58,7 @@ def stream_completion(messages: List[dict], *, temperature: float = 0.3, max_tok
     for attempt in range(2):
         try:
             completion = client.chat.completions.create(
-                model=NVIDIA_MODEL,
+                model=GROQ_MODEL,
                 messages=messages,
                 temperature=temperature,
                 top_p=1,
