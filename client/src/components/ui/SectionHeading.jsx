@@ -31,11 +31,11 @@ function SectionHeading({
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+      <h2 className="heading-2 mt-4 text-white">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-lg leading-relaxed text-slate-400">
+        <p className="mt-4 text-lg text-slate-400" style={{ lineHeight: 'var(--line-height-relaxed)' }}>
           {description}
         </p>
       )}

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FiCheckCircle, FiAlertTriangle, FiZap } from "react-icons/fi";
+import { FiCheckCircle, FiAlertTriangle, FiZap, FiTrendingUp } from "react-icons/fi";
 
 function Feedback({ feedback }) {
   if (!feedback) return null;
@@ -26,8 +26,10 @@ function Feedback({ feedback }) {
       items: parsed.strengths,
       icon: FiCheckCircle,
       iconColor: "text-emerald-400",
-      borderColor: "border-emerald-500/30",
-      bgColor: "bg-emerald-500/5",
+      iconBg: "bg-emerald-500/15",
+      borderColor: "border-emerald-500/20",
+      bgGradient: "from-emerald-500/10 to-emerald-500/5",
+      accentColor: "emerald",
     },
     {
       key: "red_flags",
@@ -35,67 +37,134 @@ function Feedback({ feedback }) {
       items: parsed.red_flags,
       icon: FiAlertTriangle,
       iconColor: "text-red-400",
-      borderColor: "border-red-500/30",
-      bgColor: "bg-red-500/5",
+      iconBg: "bg-red-500/15",
+      borderColor: "border-red-500/20",
+      bgGradient: "from-red-500/10 to-red-500/5",
+      accentColor: "red",
     },
     {
       key: "suggestions",
       title: "Action Plan",
       items: parsed.suggestions,
-      icon: FiZap,
-      iconColor: "text-blue-400",
-      borderColor: "border-blue-500/30",
-      bgColor: "bg-blue-500/5",
+      icon: FiTrendingUp,
+      iconColor: "text-indigo-400",
+      iconBg: "bg-indigo-500/15",
+      borderColor: "border-indigo-500/20",
+      bgGradient: "from-indigo-500/10 to-indigo-500/5",
       fullWidth: true,
+      accentColor: "indigo",
     },
   ];
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 mb-10">
+    <div className="mb-12 grid gap-6 md:grid-cols-2">
       {sections.map(
         (section, sectionIdx) =>
           section.items &&
           section.items.length > 0 && (
             <motion.div
               key={section.key}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: sectionIdx * 0.15 }}
-              className={`${section.bgColor} backdrop-blur-sm border ${section.borderColor} p-6 rounded-xl ${
+              transition={{ 
+                duration: 0.6, 
+                delay: sectionIdx * 0.15,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+              className={`glass-card relative overflow-hidden rounded-2xl p-6 ${
                 section.fullWidth ? "md:col-span-2" : ""
               }`}
+              style={{
+                boxShadow: 'var(--shadow-lg)',
+              }}
             >
-              <div className="flex items-center gap-3 mb-5">
-                <section.icon className={`text-xl ${section.iconColor}`} />
-                <h3 className="text-lg font-semibold text-white">
-                  {section.title}
-                </h3>
-                <span className="ml-auto text-xs text-gray-500 bg-slate-800 px-2 py-1 rounded-full">
-                  {section.items.length} items
-                </span>
+              {/* Background gradient */}
+              <div 
+                className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-40 ${section.bgGradient}`}
+              />
+
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="mb-6 flex items-center gap-4">
+                  {/* Icon */}
+                  <div 
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${section.iconBg}`}
+                    style={{
+                      boxShadow: `0 4px 12px rgba(${
+                        section.accentColor === 'emerald' ? '16, 185, 129' :
+                        section.accentColor === 'red' ? '248, 113, 113' :
+                        '99, 102, 241'
+                      }, 0.2)`,
+                    }}
+                  >
+                    <section.icon className={`text-xl ${section.iconColor}`} />
+                  </div>
+
+                  {/* Title */}
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-white">
+                      {section.title}
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      {section.items.length} {section.items.length === 1 ? 'item' : 'items'}
+                    </p>
+                  </div>
+
+                  {/* Count badge */}
+                  <div 
+                    className={`flex h-8 w-8 items-center justify-center rounded-lg ${section.iconBg}`}
+                  >
+                    <span className={`text-sm font-bold ${section.iconColor}`}>
+                      {section.items.length}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Items list */}
+                <ul className="space-y-3">
+                  {section.items.map((item, i) => {
+                    const text =
+                      typeof item === "string"
+                        ? item
+                        : item == null
+                        ? ""
+                        : JSON.stringify(item);
+                    if (!text) return null;
+                    
+                    return (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ 
+                          duration: 0.4, 
+                          delay: sectionIdx * 0.15 + i * 0.05,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                        className="group flex items-start gap-3"
+                      >
+                        {/* Bullet point */}
+                        <span 
+                          className={`mt-1.5 flex h-2 w-2 shrink-0 items-center justify-center rounded-full ${section.iconBg} transition-transform group-hover:scale-125`}
+                        >
+                          <span className={`h-1 w-1 rounded-full ${section.iconColor.replace('text-', 'bg-')}`} />
+                        </span>
+
+                        {/* Text */}
+                        <span className="flex-1 text-sm leading-relaxed text-slate-300 transition-colors group-hover:text-white">
+                          {text}
+                        </span>
+                      </motion.li>
+                    );
+                  })}
+                </ul>
               </div>
-              <ul className="space-y-3">
-                {section.items.map((item, i) => {
-                  const text =
-                    typeof item === "string"
-                      ? item
-                      : item == null
-                      ? ""
-                      : JSON.stringify(item);
-                  if (!text) return null;
-                  return (
-                    <li
-                      key={i}
-                      className="flex items-start gap-3 text-gray-300 text-sm leading-relaxed"
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${section.iconColor.replace("text-", "bg-")} mt-2 shrink-0`}
-                      />
-                      <span>{text}</span>
-                    </li>
-                  );
-                })}
-              </ul>
+
+              {/* Bottom accent line */}
+              <div 
+                className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-${section.accentColor}-500/50 to-transparent`}
+              />
             </motion.div>
           )
       )}

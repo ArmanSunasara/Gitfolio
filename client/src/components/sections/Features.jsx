@@ -103,8 +103,19 @@ function ToolCard({ tool, accent, iconBg, ring, navigate, delay }) {
 
 function Features({ navigate }) {
   return (
-    <section id="features" className="scroll-mt-24 py-20 lg:py-28">
-      <Container>
+    <section id="features" className="scroll-mt-24 py-20 lg:py-28 relative section-flow">
+      {/* Subtle ambient glow */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute left-1/2 top-1/2 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.02) 0%, transparent 70%)',
+            filter: 'blur(150px)',
+          }}
+        />
+      </div>
+      
+      <Container className="relative z-10">
         <SectionHeading
           eyebrow="Features"
           title="Two toolkits, one platform"

@@ -75,14 +75,25 @@ function Dashboard() {
       <main className="flex-1">
         <AnimatePresence mode="wait">
           {isHome ? (
-            renderPage()
+            <motion.div
+              key="home"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {renderPage()}
+            </motion.div>
           ) : (
             <motion.div
               key={route}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ 
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1]
+              }}
               className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 md:py-14 lg:px-8"
             >
               {renderPage()}

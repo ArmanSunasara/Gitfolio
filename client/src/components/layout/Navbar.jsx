@@ -5,6 +5,9 @@ import Container from "../ui/Container";
 import Button from "../ui/Button";
 import { routes } from "../../routes";
 
+const MotionDiv = motion.div;
+const MotionNav = motion.nav;
+
 /**
  * Sticky, responsive top navigation.
  *
@@ -44,15 +47,30 @@ function Navbar({ navigate, scrollToSection }) {
     action();
   };
 
+  const compact = scrolled || open;
+
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled || open
-          ? "border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <Container as="nav" aria-label="Primary" className="flex h-16 items-center justify-between">
+    <header className="fixed left-0 top-0 z-50 w-full">
+      <div
+        className="mx-auto overflow-hidden border transition-[width,max-width,margin-top,border-radius,background-color,box-shadow,backdrop-filter] duration-300 ease-out"
+        style={{
+          width: compact ? "calc(100% - 24px)" : "100%",
+          maxWidth: compact ? "72rem" : "none",
+          marginTop: compact ? 12 : 0,
+          borderRadius: compact ? 16 : 0,
+          borderColor: compact ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0)",
+          backgroundColor: compact ? "rgba(7, 7, 7, 0.8)" : "rgba(7, 7, 7, 0)",
+          boxShadow: compact ? "0 20px 40px rgba(0, 0, 0, 0.3)" : "0 0 0 rgba(0, 0, 0, 0)",
+          backdropFilter: compact ? "blur(24px)" : "blur(0px)",
+        }}
+      >
+        <Container
+          as={MotionNav}
+          aria-label="Primary"
+          animate={{ height: compact ? 56 : 64 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center justify-between"
+        >
         {/* Brand */}
         <button
           type="button"
@@ -104,12 +122,12 @@ function Navbar({ navigate, scrollToSection }) {
         >
           {open ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
         </button>
-      </Container>
+        </Container>
 
       {/* Mobile menu */}
       <AnimatePresence>
         {open && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -135,9 +153,10 @@ function Navbar({ navigate, scrollToSection }) {
                 Analyze Profile
               </Button>
             </Container>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
+      </div>
     </header>
   );
 }
