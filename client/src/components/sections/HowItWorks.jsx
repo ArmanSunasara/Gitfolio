@@ -32,8 +32,19 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-24 py-20 lg:py-28">
-      <Container>
+    <section id="how-it-works" className="scroll-mt-24 py-20 lg:py-28 relative section-flow">
+      {/* Subtle central atmospheric glow */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute left-1/2 top-1/2 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2"
+          style={{
+            background: 'radial-gradient(ellipse, rgba(34, 211, 238, 0.02) 0%, transparent 65%)',
+            filter: 'blur(130px)',
+          }}
+        />
+      </div>
+      
+      <Container className="relative z-10">
         <SectionHeading
           eyebrow="How it works"
           title="From profile to feedback in four steps"

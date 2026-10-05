@@ -63,8 +63,8 @@ function HeroPreview() {
 
   return (
     <div className="relative" aria-hidden="true">
-      {/* Glow behind the card */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-blue-600/30 via-indigo-600/20 to-cyan-500/20 blur-3xl" />
+      {/* Soft neutral light behind the card */}
+      <div className="absolute inset-0 -z-10 bg-white/10 blur-3xl" />
 
       <motion.div
         animate={{ y: [0, -10, 0] }}

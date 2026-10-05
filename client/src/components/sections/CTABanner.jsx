@@ -13,11 +13,23 @@ function CTABanner({ navigate }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-blue-700/30 via-indigo-700/20 to-slate-900 px-6 py-14 text-center shadow-2xl shadow-indigo-950/40 sm:px-12"
+          className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-black px-6 py-14 text-center shadow-2xl shadow-black/50 sm:px-12"
         >
-          {/* Glows */}
-          <div className="pointer-events-none absolute -left-16 -top-16 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -right-10 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
+          {/* Soft atmospheric glows */}
+          <div 
+            className="pointer-events-none absolute -left-16 -top-16 h-64 w-64 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%)',
+              filter: 'blur(100px)',
+            }}
+          />
+          <div 
+            className="pointer-events-none absolute -bottom-20 -right-10 h-64 w-64 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.025) 0%, transparent 70%)',
+              filter: 'blur(100px)',
+            }}
+          />
 
           <div className="relative">
             <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">

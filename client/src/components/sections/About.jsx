@@ -39,8 +39,19 @@ const highlights = [
 
 function About() {
   return (
-    <section id="about" className="scroll-mt-24 py-20 lg:py-28">
-      <Container>
+    <section id="about" className="scroll-mt-24 py-20 lg:py-28 relative section-flow">
+      {/* Subtle side glow */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute right-0 top-1/2 h-[500px] w-[600px] translate-x-1/3 -translate-y-1/2"
+          style={{
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.015) 0%, transparent 70%)',
+            filter: 'blur(140px)',
+          }}
+        />
+      </div>
+      
+      <Container className="relative z-10">
         <div className="grid items-center gap-14 lg:grid-cols-2">
           {/* Pitch + values */}
           <div>
@@ -83,7 +94,7 @@ function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-tr from-blue-600/20 to-indigo-600/20 blur-2xl" />
+            <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-white/5 blur-2xl" />
             <div className="glass grid grid-cols-2 gap-px overflow-hidden rounded-3xl">
               {highlights.map((h) => (
                 <div

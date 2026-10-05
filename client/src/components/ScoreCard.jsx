@@ -2,10 +2,38 @@ import { motion } from "framer-motion";
 
 function ScoreCard({ score }) {
   const getScoreColor = (s) => {
-    if (s >= 80) return { text: "text-emerald-400", stroke: "#34d399", bg: "bg-emerald-400/10", label: "Excellent" };
-    if (s >= 60) return { text: "text-yellow-400", stroke: "#facc15", bg: "bg-yellow-400/10", label: "Good" };
-    if (s >= 40) return { text: "text-orange-400", stroke: "#fb923c", bg: "bg-orange-400/10", label: "Fair" };
-    return { text: "text-red-400", stroke: "#f87171", bg: "bg-red-400/10", label: "Needs Work" };
+    if (s >= 80) return { 
+      text: "text-emerald-400", 
+      stroke: "#34d399", 
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
+      glow: "shadow-emerald-500/20",
+      label: "Excellent" 
+    };
+    if (s >= 60) return { 
+      text: "text-yellow-400", 
+      stroke: "#facc15", 
+      bg: "bg-yellow-500/10",
+      border: "border-yellow-500/20",
+      glow: "shadow-yellow-500/20",
+      label: "Good" 
+    };
+    if (s >= 40) return { 
+      text: "text-orange-400", 
+      stroke: "#fb923c", 
+      bg: "bg-orange-500/10",
+      border: "border-orange-500/20",
+      glow: "shadow-orange-500/20",
+      label: "Fair" 
+    };
+    return { 
+      text: "text-red-400", 
+      stroke: "#f87171", 
+      bg: "bg-red-500/10",
+      border: "border-red-500/20",
+      glow: "shadow-red-500/20",
+      label: "Needs Work" 
+    };
   };
 
   const colors = getScoreColor(score);
@@ -15,58 +43,121 @@ function ScoreCard({ score }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col items-center mb-10"
+      transition={{ 
+        duration: 0.6, 
+        ease: [0.22, 1, 0.36, 1] 
+      }}
+      className="glass-card relative flex flex-col items-center rounded-3xl p-8"
+      style={{
+        boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
+      }}
     >
-      <h2 className="text-lg font-medium text-gray-400 mb-6 uppercase tracking-wider">
-        Portfolio Score
-      </h2>
-      <div className="relative w-48 h-48">
-        <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
-          <circle
-            cx="80"
-            cy="80"
-            r={radius}
-            fill="none"
-            stroke="#1e293b"
-            strokeWidth="10"
+      {/* Background glow effect */}
+      <div 
+        className="pointer-events-none absolute inset-0 rounded-3xl opacity-30"
+        style={{
+          background: `radial-gradient(circle at center, ${colors.stroke}15, transparent 70%)`,
+          filter: 'blur(40px)',
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center">
+        <motion.h2
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-8 text-sm font-semibold uppercase tracking-widest text-slate-400"
+        >
+          Portfolio Score
+        </motion.h2>
+
+        <div className="relative">
+          {/* Outer glow ring */}
+          <div 
+            className="absolute inset-0 rounded-full opacity-20"
+            style={{
+              boxShadow: `0 0 60px ${colors.stroke}`,
+              filter: 'blur(20px)',
+            }}
           />
-          <motion.circle
-            cx="80"
-            cy="80"
-            r={radius}
-            fill="none"
-            stroke={colors.stroke}
-            strokeWidth="10"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            initial={{ strokeDashoffset: circumference }}
-            animate={{ strokeDashoffset: circumference - progress }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <motion.span
-            className={`text-5xl font-bold ${colors.text}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {score}
-          </motion.span>
-          <span className="text-gray-500 text-sm">/ 100</span>
+
+          {/* Score ring */}
+          <div className="relative h-52 w-52">
+            <svg className="h-full w-full -rotate-90" viewBox="0 0 160 160">
+              {/* Background track */}
+              <circle
+                cx="80"
+                cy="80"
+                r={radius}
+                fill="none"
+                stroke="rgba(255, 255, 255, 0.05)"
+                strokeWidth="12"
+              />
+              {/* Progress arc */}
+              <motion.circle
+                cx="80"
+                cy="80"
+                r={radius}
+                fill="none"
+                stroke={colors.stroke}
+                strokeWidth="12"
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                initial={{ strokeDashoffset: circumference }}
+                animate={{ strokeDashoffset: circumference - progress }}
+                transition={{ 
+                  duration: 1.8, 
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.3 
+                }}
+                style={{
+                  filter: `drop-shadow(0 0 8px ${colors.stroke})`,
+                }}
+              />
+            </svg>
+
+            {/* Center content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <motion.span
+                className={`text-6xl font-bold ${colors.text}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ 
+                  delay: 0.8,
+                  duration: 0.5,
+                  ease: [0.34, 1.56, 0.64, 1]
+                }}
+              >
+                {score}
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                className="text-sm text-slate-500"
+              >
+                / 100
+              </motion.span>
+            </div>
+          </div>
         </div>
+
+        {/* Label badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className={`mt-8 rounded-full border px-6 py-2 text-sm font-semibold backdrop-blur-sm ${colors.bg} ${colors.border} ${colors.text}`}
+          style={{
+            boxShadow: `0 8px 16px ${colors.glow}`,
+          }}
+        >
+          {colors.label}
+        </motion.div>
       </div>
-      <motion.span
-        initial={{ opacity: 0, y: 5 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className={`mt-4 px-4 py-1.5 rounded-full text-sm font-medium ${colors.bg} ${colors.text}`}
-      >
-        {colors.label}
-      </motion.span>
     </motion.div>
   );
 }
